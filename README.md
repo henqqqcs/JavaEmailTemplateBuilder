@@ -31,10 +31,16 @@ Using the method setSourceFileLocation() set the location of your template, and 
 	setSourceFileLocation("resources/emails/registration-template.txt");
 
 
-####Use the method createTemplate() to finish the template.
+####Use the method createTemplate() to generate your temaplate
+When the method createTemplate() is called, all variables are replaced
 
+####Example - Creating and template
 
-###Email template - simple model
-
+	EmailTemplate emailTemplate = new EmailTemplateBuilder()
+		.addVariable("%USERNAME%", "Jon Snow")
+		.addVariable("%REGISTRATION-TOKEN%", "430e842440a3f0989d")
+		.setHeaderCharacters("##")
+		.setSubjectProperty("subject:")
+		.setSourceFileLocation("resources/emails/registration-template.txt").createTemplate();
 
 ###Using header to aditional information
