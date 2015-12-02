@@ -20,12 +20,6 @@ public class EmailTemplateBuilder {
 		return this;
 	}
 
-	/**
-	 * THis is used to put information, thats is not part of the email body
-	 * 
-	 * @param comments
-	 * @return
-	 */
 	public EmailTemplateBuilder setHeaderCharacters(String headerCharacters) {
 		this.emailTemplateInstance.setHeaderCharacters(headerCharacters);
 		return this;
@@ -94,8 +88,6 @@ public class EmailTemplateBuilder {
 		try (BufferedReader reader = new BufferedReader(new StringReader(emailTemplateText))) {
 			String line = reader.readLine();
 			while (line != null) {
-				
-				//remove header line
 				if (!line.startsWith(emailTemplateInstance.getHeaderCharacters())){
 					result.add(line);
 				}
@@ -103,7 +95,6 @@ public class EmailTemplateBuilder {
 			}
 		} catch (IOException exc) {
 		}
-		
 		
 		//set new text without the header
 		StringBuilder sb = new StringBuilder();

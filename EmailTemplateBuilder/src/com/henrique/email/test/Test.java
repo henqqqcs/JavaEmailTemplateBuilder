@@ -8,7 +8,7 @@ public class Test {
 	public static void main(String[] args) {
 
 		EmailTemplate emailTemplate = new EmailTemplateBuilder()
-				.addVariable("%USERNAME%", "henrique")
+				.addVariable("%USERNAME%", "Jon Snow")
 				.addVariable("%REGISTRATION-TOKEN%", "430e842440a3f0989d")
 				.setHeaderCharacters("##")
 				.setSubjectProperty("subject:")

@@ -11,7 +11,7 @@ public class EmailTemplate {
 	private String headerCharacters;
 	private String subjectProperty;
 	private String subject;
-	
+
 	public String getSubjectProperty() {
 		return subjectProperty;
 	}
@@ -20,7 +20,6 @@ public class EmailTemplate {
 		this.subjectProperty = subjectProperty;
 	}
 
-	
 	public String getSubject() {
 		return subject;
 	}
@@ -61,5 +60,4 @@ public class EmailTemplate {
 		this.variableMap.put(variable, replace);
 	}
 
-	
 }
