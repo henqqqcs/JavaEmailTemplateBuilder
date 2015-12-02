@@ -1,32 +1,37 @@
 # JavaEmailTemplateBuilder
 
-Mamute QA [![Build Status](https://secure.travis-ci.org/caelum/mamute.png)](http://travis-ci.org/caelum/mamute)
-======
+##How to create an email template
 
-##How to set up an instance of mamute
+1. Create a file containing the template for your email and put it on your classpath.
+With your variables, which will be replaced.
 
-First of all, you need to setup an MySQL database. The default database name is 
-`mamute_development`, the username is `root` and the password must be blank.
+For example:
+Hello %USERNAME%, Welcome to the Java Email Template API forums!
 
-##To use mamute
+Thanks for registering at Java Email Template API forums!
 
-###Using a compiled war file:
+To complete your registration, please visit this URL:
+http://java.com/register?registrationToken=%REGISTRATION-TOKEN%
 
-1. Download the war of the latest version at http://www.mamute.org
-2. Unpack it to a folder named `yourproject/mamute`
-3. Run it by executing the bash script `mamute/run.sh`
-4. If everything worked, you are free to customize `mamute` folder as you want to! 
+All the best,
+Java Email Template API forums
 
-###Using git + maven:
+2. Instantiate the class EmailTemplateBuilder, and set the variables you wish to be replaced on your template file using the method addVariable
 
-1. Clone the repository from [github](https://github.com/caelum/mamute)
-2. Install node and npm
-3. Run `npm install`
-5. Run `npm install -g grunt-cli`
-6. Run `./scripts/mvn-package.sh`
-7. Make a copy of `mamute/target/mamute-1.0.0-SNAPSHOT` to `yourproject/mamute`
-8. Run it by executing the bash script `mamute/run.sh`
-9. If everything worked, you are free to customize `mamute` folder as you want to! 
+example:
+ new EmailTemplateBuilder()
+				.addVariable("%USERNAME%", "Jon Snow")
+
+3. Set your source file location and the name of the file
+
+4. Use the method createTemplate() to finish the template.
+
+
+###Email template - simple model
+
+
+###Using header to aditional information
+
 
 ##To contribute with mamute:
 
