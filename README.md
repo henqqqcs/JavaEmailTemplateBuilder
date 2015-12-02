@@ -44,3 +44,22 @@ When the method createTemplate() is called, all variables are replaced
 		.setSourceFileLocation("resources/emails/registration-template.txt").createTemplate();
 
 ###Using header to aditional information
+Example of temaple with a header:
+
+	## ------------------------------------------------------------------
+	## template: Registration email template
+	## subject: Welcome %USERNAME%, this a registration email!
+	## ------------------------------------------------------------------
+
+	Hello %USERNAME%, Welcome to the Java Email Template API forums!
+
+	Thanks for registering at Java Email Template API forums! We are glad you have chosen to be a part of our community and we 		hope you enjoy your stay.
+
+	To complete your registration, please visit this URL:
+	h ttp://java.com/register?registrationToken=%REGISTRATION-TOKEN%
+
+	All the best,
+	Java Email Template API forums
+
+
+
