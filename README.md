@@ -2,7 +2,8 @@
 
 ##How to create an email template
 
-####Create a file containing the template for your email and put it on your classpath with your variables, which will be replaced.
+####Create a file with your email temaple
+Create a file containing the template for your email and put it on your classpath with your variables, which will be replaced.
 
 For example:
 
@@ -16,7 +17,8 @@ For example:
 	All the best,
 	Java Email Template API forums
 
-####Instantiate the class EmailTemplateBuilder, and set the variables you wish to be replaced on your template file using the method addVariable
+####Add your variables
+Instantiate the class EmailTemplateBuilder, and set the variables you wish to be replaced on your template file using the method addVariable
 
 example:
 
@@ -24,8 +26,12 @@ example:
  	
 
 ####Set your source file location and the name of the file
+Using the method setSourceFileLocation() set the location of your template, and it's name.
 
-###Use the method createTemplate() to finish the template.
+	setSourceFileLocation("resources/emails/registration-template.txt");
+
+
+####Use the method createTemplate() to finish the template.
 
 
 ###Email template - simple model
