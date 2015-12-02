@@ -44,7 +44,7 @@ When the method createTemplate() is called, all variables are replaced
 		.setSourceFileLocation("resources/emails/registration-template.txt").createTemplate();
 
 ###Using header to aditional information
-Example of temaple with a header:
+Example of template with a header and a subject:
 
 	## ------------------------------------------------------------------
 	## template: Registration email template
