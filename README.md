@@ -31,18 +31,3 @@ example:
 
 
 ###Using header to aditional information
-
-
-##To contribute with mamute:
-
-1. Fork the repository from [github](https://github.com/caelum/mamute)
-2. Clone the fork
-3. Install node and npm
-4. Run `npm install`
-5. Run `npm install -g grunt-cli`
-6. Run `Main.java` to start mamute
-7. Develop and do your pull request
-
-##FAQ
-
-* [How to setup an instance](http://meta.mamute.org/221-how-to-set-up-an-instance-of-mamute)
