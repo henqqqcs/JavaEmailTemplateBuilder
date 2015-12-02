@@ -5,6 +5,7 @@
 ###Create a file containing the template for your email and put it on your classpath with your variables, which will be replaced.
 
 For example:
+
 	Hello %USERNAME%, Welcome to the Java Email Template API forums!
 
 	Thanks for registering at Java Email Template API forums!
