@@ -3,126 +3,129 @@ package com.henrique.email.template;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
-import com.henrique.email.exceptions.EmailTemplateNotFoundException;
-import com.henrique.email.exceptions.SubjectPropertyNotFoundException;
+import com.henrique.email.template.io.EmailSourceFileReader;
 
 public class EmailTemplateBuilder {
 
-	private EmailTemplate emailTemplateInstance = new EmailTemplate();
+	private Map<String, String> variableMap = new HashMap<String, String>();
+	private String headerCharacters;
+	private String subject;
+	private String subjectProperty;
+	private String htmlMessage;
 
 	public EmailTemplateBuilder addVariable(String variable, String replace) {
-		// add a variable
-		this.emailTemplateInstance.addVariable(variable, replace);
+		variableMap.put(variable, replace);
 		return this;
 	}
 
 	public EmailTemplateBuilder setHeaderCharacters(String headerCharacters) {
-		this.emailTemplateInstance.setHeaderCharacters(headerCharacters);
+		this.headerCharacters = headerCharacters;
 		return this;
 	}
 
 	public EmailTemplateBuilder setSourceFileLocation(String sourceFileLocation) {
-
 		try {
-			this.emailTemplateInstance.setSourceFileLocation(sourceFileLocation);
-			String templateText;
-			templateText = new SourceFileReader().getFileText(sourceFileLocation);
-			this.emailTemplateInstance.setText(templateText);
-		} catch (EmailTemplateNotFoundException e) {
+			this.htmlMessage = new EmailSourceFileReader().getFileString(sourceFileLocation);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return this;
 	}
 
-	public EmailTemplate createTemplate() {
-
-		//check if has a subject, must be before the header removal
-		if (emailTemplateInstance.getSubjectProperty() != null) 
-			extractSubject();
-			
-		// check if has a header
-		if (emailTemplateInstance.getHeaderCharacters() != null) {
-			removeHeader();
-		}
-		
-		replaceVariables();
-		return emailTemplateInstance;
+	public EmailTemplateBuilder setHtmlMessage(String htmlMessage) {
+		this.htmlMessage = "Hello %USERNAME%, Welcome to the Java Email Template API forums!";
+		return this;
 	}
 
-	private void extractSubject() {
-		
-		String emailTemplateText = this.emailTemplateInstance.getText();
-		
-		try (BufferedReader reader = new BufferedReader(new StringReader(emailTemplateText))) {
-			String line = reader.readLine();
-			while (line != null) {
-				if (line.contains(emailTemplateInstance.getSubjectProperty())) {
-					int indexOf = line.indexOf(emailTemplateInstance.getSubjectProperty());
-					int propLenght = emailTemplateInstance.getSubjectProperty().length();
-					String subject = line.substring(indexOf + propLenght);
-					emailTemplateInstance.setSubject(subject.trim());
-				}
-				line = reader.readLine();
-			}
-			
-			if (emailTemplateInstance.getSubject() == null) {
-				throw new SubjectPropertyNotFoundException("Could not found this property on source file: " + emailTemplateInstance.getSubjectProperty());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	public EmailTemplateBuilder setSubjectProperty(String subjectProperty) {
+		this.subjectProperty = subjectProperty;
+		return this;
+	}
+
+	public EmailTemplate createHtmlEmail() {
+
+		if (htmlMessage == null) {
+			throw new IllegalArgumentException(
+					"The variable htmlMessage is null. You should set it using the method setSourceFileLocation() or setHtmlMessage().");
 		}
-		
-		return;
-		
+
+		// replace variables
+		replaceVariables();
+
+		// get the subject if its setted
+		extractSubject();
+
+		// remove header
+		removeHeader();
+
+		// create email
+		EmailTemplate email = new EmailTemplate();
+		email.setMessage(htmlMessage);
+		email.setSubject(subject);
+		return email;
+
 	}
 
 	private void removeHeader() {
 
-		String emailTemplateText = this.emailTemplateInstance.getText();
+		// no headers setted
+		if (headerCharacters == null) {
+			return;
+		}
 
-		List<String> result = new ArrayList<>();
-		try (BufferedReader reader = new BufferedReader(new StringReader(emailTemplateText))) {
+		StringBuilder sb = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(new StringReader(htmlMessage))) {
 			String line = reader.readLine();
 			while (line != null) {
-				if (!line.startsWith(emailTemplateInstance.getHeaderCharacters())){
-					result.add(line);
+				if (!line.startsWith(headerCharacters)) {
+					sb.append(line + System.getProperty("line.separator"));
 				}
 				line = reader.readLine();
 			}
-		} catch (IOException exc) {
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		//set new text without the header
-		StringBuilder sb = new StringBuilder();
-		for (String line : result) {
-			sb.append(line + System.getProperty("line.separator"));
-		}
-		emailTemplateInstance.setText(sb.toString());
+
+		this.htmlMessage = sb.toString();
 	}
 
 	private void replaceVariables() {
-
-		String emailTemplateText = this.emailTemplateInstance.getText();
-		if (emailTemplateText != null) {
-			// iterate map of variables
-			Map<String, String> variableMap = this.emailTemplateInstance.getVariableMap();
-			for (Map.Entry<String, String> entry : variableMap.entrySet()) {
-				emailTemplateText = emailTemplateText.replace(entry.getKey(), entry.getValue());
-			}
-			this.emailTemplateInstance.setText(emailTemplateText);
-
-		} else {
-
+		// iterate map of variables
+		for (Map.Entry<String, String> entry : variableMap.entrySet()) {
+			htmlMessage = htmlMessage.replace(entry.getKey(), entry.getValue());
 		}
+
 	}
 
-	public EmailTemplateBuilder setSubjectProperty(String subjectProperty) {
-		this.emailTemplateInstance.setSubjectProperty(subjectProperty);
-		return this;
+	private void extractSubject() {
+
+		if (subjectProperty != null) {
+
+			try (BufferedReader reader = new BufferedReader(new StringReader(htmlMessage))) {
+				String line = reader.readLine();
+				while (line != null) {
+					if (line.contains(subjectProperty)) {
+						int indexOf = line.indexOf(subjectProperty);
+						int propLenght = subjectProperty.length();
+						this.subject = line.substring(indexOf + propLenght).trim();
+					}
+					line = reader.readLine();
+				}
+
+				if (subject == null) {
+					throw new IllegalArgumentException(
+							"Could not found this property on source file: " + subjectProperty);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		return;
+
 	}
 
 }
