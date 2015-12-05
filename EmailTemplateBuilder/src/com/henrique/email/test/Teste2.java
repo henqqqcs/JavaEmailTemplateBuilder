@@ -17,7 +17,6 @@ public class Teste2 {
 				.setSourceFileLocation("/tst/registration-template.txt")
 				.createHtmlEmail();
 		
-		
 		System.out.println("Html message: ");
 		System.out.println(email.getMessage());
 		

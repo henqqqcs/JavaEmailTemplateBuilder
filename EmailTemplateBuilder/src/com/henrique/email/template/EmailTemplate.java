@@ -2,6 +2,9 @@ package com.henrique.email.template;
 
 public class EmailTemplate {
 
+	protected EmailTemplate (){
+	}
+	
 	private String message;
 	private String subject;
 	
