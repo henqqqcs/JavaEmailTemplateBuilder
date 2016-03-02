@@ -34,7 +34,7 @@ Using the method setSourceFileLocation() set the location of your template, and 
 ####Use the method createTemplate() to generate your temaplate
 When the method createTemplate() is called, all variables are replaced
 
-####Example - Creating and template
+####Example - Creating a template
 
 	EmailTemplate emailTemplate = new EmailTemplateBuilder()
 		.addVariable("%USERNAME%", "Jon Snow")
